@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+
 import { Movie } from "../../types/movie";
 import { fetchMovies } from "../../services/movieService";
 
