@@ -1,11 +1,11 @@
 import { useState } from "react";
-
+import { Toaster, toast } from "react-hot-toast";
 import { Movie } from "../../types/movie";
 import { fetchMovies } from "../../services/movieService";
 
 import SearchBar from "../SearchBar/SearchBar";
 import MovieGrid from "../MovieGrid/MovieGrid";
-import MovieModal from "../MovieModal/Movie.Modal";
+import MovieModal from "../MovieModal/MovieModal";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
@@ -21,7 +21,13 @@ export default function App() {
       setLoading(true);
       setError(false);
       setQuery(newQuery);
+
       const results = await fetchMovies({ query: newQuery });
+
+      if (results.length === 0) {
+        toast.error("There are no films that match your query");
+      }
+
       setMovies(results);
     } catch {
       setError(true);
@@ -40,7 +46,9 @@ export default function App() {
 
   return (
     <>
-      <SearchBar onSubmit={handleSearch} />
+      <Toaster position="top-right" reverseOrder={false} />
+
+      <SearchBar action={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage />}
       {movies.length > 0 && !loading && !error && (
