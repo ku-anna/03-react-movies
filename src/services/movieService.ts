@@ -3,7 +3,7 @@ import { Movie } from "../types/movie";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
-const API_KEY = import.meta.env.VITE_TMDB_KEY;
+const API_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
 
 interface FetchMoviesParams {
   query: string;
@@ -28,7 +28,7 @@ export async function fetchMovies({
         page,
       },
       headers: {
-        Authorization: `Bearer ${API_KEY}`,
+        Authorization: `Bearer ${API_TOKEN}`,
       },
     });
 
