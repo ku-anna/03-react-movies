@@ -3,14 +3,12 @@ import { createPortal } from "react-dom";
 import css from "./MovieModal.module.css";
 import { Movie } from "../../types/movie";
 
-interface Props {
+interface MovieModalProps {
   movie: Movie;
   onClose: () => void;
 }
 
-const modalRoot = document.getElementById("modal-root")!;
-
-export default function MovieModal({ movie, onClose }: Props) {
+export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -65,6 +63,6 @@ export default function MovieModal({ movie, onClose }: Props) {
         </div>
       </div>
     </div>,
-    modalRoot
+    document.body // 🔧 Виправлено: портал рендериться в <body>
   );
 }

@@ -4,6 +4,11 @@ import { Movie } from "../types/movie";
 const BASE_URL = "https://api.themoviedb.org/3";
 
 const API_TOKEN = import.meta.env.VITE_TMDB_TOKEN;
+if (!API_TOKEN) {
+  throw new Error(
+    "TMDB API token is missing. Please set VITE_TMDB_TOKEN in your environment."
+  );
+}
 
 interface FetchMoviesParams {
   query: string;
@@ -34,7 +39,20 @@ export async function fetchMovies({
 
     return response.data.results;
   } catch (error) {
-    console.error("Error fetching movies:", error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status;
+
+      if (status === 401) {
+        console.error("Unauthorized: Check your TMDB API token.");
+      } else if (status === 404) {
+        console.error("Endpoint not found.");
+      } else {
+        console.error("Network or server error:", error.message);
+      }
+    } else {
+      console.error("Unexpected error:", error);
+    }
+
+    throw new Error("Failed to fetch movies. Please try again later.");
   }
 }
